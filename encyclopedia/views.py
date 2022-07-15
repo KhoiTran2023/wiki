@@ -5,6 +5,7 @@ from django import forms
 
 from . import util
 import markdown2
+import random
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -37,3 +38,13 @@ def displayResults(request):
     return render(request, "encyclopedia/search.html", {
         "content":entries,
     })
+
+def newEntry(request):
+    return render(request, "encyclopedia/newEntry.html")
+
+def editEntry(request, title):
+    return render(request, "encyclopedia/editEntry.html")
+
+def randomPage(request):
+    title = random.choice(util.list_entries())
+    return redirect(reverse('display_entry', args = [title]))
