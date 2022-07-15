@@ -6,6 +6,10 @@
 {% block body %}
 
 {% for i in content %}
-<div>{{i|safe}}</div>
+<div>
+    <a href = {% url 'display_entry' i %}>
+        {{i|safe}}
+    </a>
+</div>
 {% endfor %}
 {% endblock %}
