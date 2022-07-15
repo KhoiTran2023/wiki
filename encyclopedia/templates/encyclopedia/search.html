@@ -4,4 +4,8 @@
 {% endblock %}
 
 {% block body %}
+
+{% for i in content %}
+<div>{{i|safe}}</div>
+{% endfor %}
 {% endblock %}

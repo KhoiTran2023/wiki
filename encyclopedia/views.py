@@ -29,10 +29,11 @@ def displayResults(request):
         title = request.POST["q"]
         if util.get_entry(title):
             return redirect(reverse('display_entry', args = [title]))
-        entries = []
-        for i in util.list_entries():
-            if title in i:
-                entries.append(title)
+        else:
+            entries = []
+            for i in util.list_entries():
+                if title.lower() in i.lower():
+                    entries.append(i)
     return render(request, "encyclopedia/search.html", {
         "content":entries,
     })
