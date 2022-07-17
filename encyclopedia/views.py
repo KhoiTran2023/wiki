@@ -71,7 +71,21 @@ def addEntry(request):
     return redirect(reverse('display_entry', args = [title]))
 
 def editEntry(request, title):
-    return render(request, "encyclopedia/editEntry.html")
+    content = util.get_entry(title)
+    return render(request, "encyclopedia/editEntry.html", {
+        "title":title,
+        "content":content,
+    })
+
+def saveEntry(request):
+    if request.method == "POST":
+        newContent = request.POST["content"]
+        title = request.POST["title"]
+        util.save_entry(title, newContent)
+        messages.success(request,"Entry successfully edited!")
+    else:
+        redirect(reverse(''))
+    return redirect(reverse('edit_entry', args = [title]))
 
 def randomPage(request):
     title = random.choice(util.list_entries())

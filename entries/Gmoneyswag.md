@@ -1,1 +1,1 @@
-fuck bitches get money
+fuck bitches get money fr on god?
