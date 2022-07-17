@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django import forms
+from django.contrib import messages
 
 from . import util
 import markdown2
@@ -39,8 +40,35 @@ def displayResults(request):
         "content":entries,
     })
 
+class newEntryForm(forms.Form):
+    title = forms.CharField(label = "New Entry Title", max_length = 100)
+    content = forms.CharField(label = "New Entry Content", widget = forms.Textarea)
+
 def newEntry(request):
-    return render(request, "encyclopedia/newEntry.html")
+    return render(request, "encyclopedia/newEntry.html", {
+        "form":newEntryForm(),
+    })
+
+def addEntry(request):
+    if request.method == "POST":
+        form = newEntryForm(request.POST)
+
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+            if util.get_entry(title):
+                messages.error(request, f'{title} already exists!')
+                return render(request, "encyclopedia/newEntry.html", {
+                    "form":newEntryForm(),
+                })
+            util.save_entry(title,content)
+            messages.success(request, f'{title} was successfully saved!')
+        else:
+            messages.error("Form request not valid. Try again.")
+            return render(request, "encyclopedia/newEntry.html", {
+                "form":newEntryForm(),
+            })
+    return redirect(reverse('display_entry', args = [title]))
 
 def editEntry(request, title):
     return render(request, "encyclopedia/editEntry.html")

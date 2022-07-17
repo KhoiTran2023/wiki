@@ -29,6 +29,11 @@
                 {% endblock %}
             </div>
             <div class="main col-lg-10 col-md-9">
+                {% if messages %}
+                    {% for message in messages %}
+                        {{message}}
+                    {% endfor %}
+                {% endif %}
                 {% block body %}
                 {% endblock %}
             </div>
